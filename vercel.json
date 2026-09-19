@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {"source": "/", "destination": "/api/site?route=/"},
+    {"source": "/home-page", "destination": "/api/site?route=/home-page"},
+    {"source": "/zero-fee-inquiry", "destination": "/api/site?route=/zero-fee-inquiry"},
+    {"source": "/zero-fee-thank-you", "destination": "/api/site?route=/zero-fee-thank-you"},
+    {"source": "/privacy", "destination": "/api/site?route=/privacy"},
+    {"source": "/api/lead", "destination": "/api/site?route=/api/lead"}
+  ]
+}
