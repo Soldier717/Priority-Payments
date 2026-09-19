@@ -23,7 +23,9 @@ export default async function handler(req, res) {
     }
     body = Buffer.concat(chunks);
   }
-  const request = new Request(new URL(path, 'https://guidedpayments.com'), {
+  const host = req.headers.host || 'guidedpayments.com';
+  const protocol = host.startsWith('127.0.0.1:') || host.startsWith('localhost:') ? 'http' : 'https';
+  const request = new Request(new URL(path, `${protocol}://${host}`), {
     method: req.method, headers, body,
   });
   const response = await worker.fetch(request, process.env);
