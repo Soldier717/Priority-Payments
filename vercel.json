@@ -31,6 +31,18 @@
     {
       "source": "/api/form-token",
       "destination": "/api/site?route=/api/form-token"
+    },
+    {
+      "source": "/zerofee",
+      "destination": "/api/site?route=/zerofee"
+    },
+    {
+      "source": "/zerofee/inquiry",
+      "destination": "/api/site?route=/zerofee/inquiry"
+    },
+    {
+      "source": "/zerofee/thank-you",
+      "destination": "/api/site?route=/zerofee/thank-you"
     }
   ],
   "functions": {
