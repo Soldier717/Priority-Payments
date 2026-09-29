@@ -75,6 +75,18 @@
     {
       "source": "/api/referral",
       "destination": "/api/site?route=/api/referral"
+    },
+    {
+      "source": "/partners",
+      "destination": "/api/site?route=/partners"
+    },
+    {
+      "source": "/refer",
+      "destination": "/api/site?route=/refer"
+    },
+    {
+      "source": "/api/partners/:action",
+      "destination": "/api/site?route=/api/partners/:action"
     }
   ],
   "functions": {
