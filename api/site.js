@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     let size = 0;
     for await (const chunk of req) {
       size += chunk.length;
-      if (size > 12000) {
+      if (size > (['/api/boarding/upload','/api/statement/upload'].includes(path)?4300000:12000)) {
         res.statusCode = 413;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ error: 'Your message is too long.' }));
@@ -25,7 +25,9 @@ export default async function handler(req, res) {
   }
   const host = req.headers.host || 'guidedpayments.com';
   const protocol = host.startsWith('127.0.0.1:') || host.startsWith('localhost:') ? 'http' : 'https';
-  const request = new Request(new URL(path, `${protocol}://${host}`), {
+  const requestUrl=new URL(path, `${protocol}://${host}`);
+  const query=new URLSearchParams(incoming.search);query.delete('route');requestUrl.search=query.toString();
+  const request = new Request(requestUrl, {
     method: req.method, headers, body,
   });
   const response = await worker.fetch(request, process.env);

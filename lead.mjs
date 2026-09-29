@@ -11,7 +11,7 @@ export function issueToken(env,now=Date.now()){
  const payload=`${now}.${randomUUID()}`;
  return json(200,{token:`${payload}.${signature(payload,env)}`});
 }
-function validToken(token,env,now){
+export function validToken(token,env,now){
  if(typeof token!=='string'||token.length>200)return false;
  const [time,nonce,sig]=token.split('.');if(!time||!nonce||!/^[a-f0-9]{64}$/.test(sig||''))return false;
  const age=now-Number(time);if(!Number.isFinite(age)||age<1500||age>2*60*60*1000)return false;

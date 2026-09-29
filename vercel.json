@@ -43,11 +43,35 @@
     {
       "source": "/zerofee/thank-you",
       "destination": "/api/site?route=/zerofee/thank-you"
+    },
+    {
+      "source": "/boarding",
+      "destination": "/api/site?route=/boarding"
+    },
+    {
+      "source": "/boarding/review",
+      "destination": "/api/site?route=/boarding/review"
+    },
+    {
+      "source": "/api/boarding/:action",
+      "destination": "/api/site?route=/api/boarding/:action"
+    },
+    {
+      "source": "/statement-analyzer",
+      "destination": "/api/site?route=/statement-analyzer"
+    },
+    {
+      "source": "/api/statement/:action",
+      "destination": "/api/site?route=/api/statement/:action"
+    },
+    {
+      "source": "/pos-center",
+      "destination": "/api/site?route=/pos-center"
     }
   ],
   "functions": {
     "api/site.js": {
-      "maxDuration": 60
+      "maxDuration": 180
     }
   }
 }
