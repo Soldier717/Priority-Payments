@@ -2,7 +2,6 @@ import {createHmac,randomUUID,timingSafeEqual} from 'node:crypto';
 import {equipmentOptions,volumeOptions,equipmentPrices} from './funnel.mjs';
 const json=(status,data)=>Response.json(data,{status,headers:{'Cache-Control':'no-store'}});
 const destination='sean@guidedpayments.com';
-const role='Guided Payments inquiry';
 const ready=env=>env.RESEND_API_KEY&&env.MAIL_FROM&&env.SUPABASE_URL&&env.SUPABASE_SERVICE_ROLE_KEY;
 const unavailable='Online submission is temporarily unavailable. Please call 239-297-1703 or email sean@guidedpayments.com.';
 const signature=(text,env)=>createHmac('sha256',env.FORM_SECRET||env.RESEND_API_KEY).update(text).digest('hex');
@@ -17,7 +16,8 @@ export function validToken(token,env,now){
  const age=now-Number(time);if(!Number.isFinite(age)||age<1500||age>2*60*60*1000)return false;
  const expected=signature(`${time}.${nonce}`,env);return timingSafeEqual(Buffer.from(sig),Buffer.from(expected));
 }
-export function createLeadHandler({send=fetch,now=Date.now}={}){
+export function createLeadHandler({send=fetch,now=Date.now,referral=false}={}){
+ const role=referral?'Guided Payments referral partner':'Guided Payments inquiry';
  const limits=new Map(),pending=new Map();
  return async function handle(request,env){
   if(request.method!=='POST')return json(405,{error:'Method not allowed.'});
@@ -35,10 +35,10 @@ export function createLeadHandler({send=fetch,now=Date.now}={}){
    fields[key]=(data[key]||'').trim();if(fields[key].length>max)return json(400,{error:'One of your fields is too long.'});
   }
   fields.email=fields.email.toLowerCase();
-  if(!fields.name||!fields.organization||!/^\S+@[^\s@]+\.[^\s@]+$/.test(fields.email)||/[\r\n]/.test(fields.email)||fields.phone.replace(/\D/g,'').length<7||!/^[+()\d.\s-]+$/.test(fields.phone)||!volumeOptions.includes(fields.cardVolume)||!equipmentOptions.includes(fields.equipment)||!/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(fields.submissionId))return json(400,{error:'Please provide your name, business, valid contact details, monthly card sales, and equipment interest.'});
+  if(!fields.name||(!referral&&!fields.organization)||!/^\S+@[^\s@]+\.[^\s@]+$/.test(fields.email)||/[\r\n]/.test(fields.email)||fields.phone.replace(/\D/g,'').length<7||!/^[+()\d.\s-]+$/.test(fields.phone)||(!referral&&(!volumeOptions.includes(fields.cardVolume)||!equipmentOptions.includes(fields.equipment)))||!/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(fields.submissionId))return json(400,{error:referral?'Please provide your name, valid email address, and phone number.':'Please provide your name, business, valid contact details, monthly card sales, and equipment interest.'});
   if(!ready(env))return json(503,{error:unavailable});
   if(!validToken(data.token,env,clock))return json(400,{code:'TOKEN_EXPIRED',error:'Please wait a moment and submit again. Your form verification has been refreshed.'});
-  const message=`Source: https://guidedpayments.com\nMonthly card sales: ${fields.cardVolume}\nEquipment: ${fields.equipment}\nSupplied equipment pricing: ${equipmentPrices[fields.equipment]||'To be discussed'}\nNotes: ${fields.message||'None'}\nRequested phone/email follow-up. No automated outreach consent.`;
+  const message=referral?`Source: https://guidedpayments.com/referrals\nReferral partner interest\nNotes: ${fields.message||'None'}\nRequested phone/email follow-up about the referral program. No automated outreach consent.`:`Source: https://guidedpayments.com\nMonthly card sales: ${fields.cardVolume}\nEquipment: ${fields.equipment}\nSupplied equipment pricing: ${equipmentPrices[fields.equipment]||'To be discussed'}\nNotes: ${fields.message||'None'}\nRequested phone/email follow-up. No automated outreach consent.`;
   const row={id:fields.submissionId,full_name:fields.name,email:fields.email,company:fields.organization,phone:fields.phone,role,message};
   const key=signature(JSON.stringify(row),env);
   if(pending.has(key))return (await pending.get(key)).clone();
@@ -62,7 +62,7 @@ export function createLeadHandler({send=fetch,now=Date.now}={}){
     }
    }catch{return json(503,{error:'We could not save your inquiry. Please try again or contact sean@guidedpayments.com.'});}
    try{
-    const email=await send('https://api.resend.com/emails',{method:'POST',headers:{Authorization:`Bearer ${env.RESEND_API_KEY}`,'Content-Type':'application/json','Idempotency-Key':`guided-inquiry-${fields.submissionId}`},body:JSON.stringify({from:env.MAIL_FROM,to:[destination],reply_to:fields.email,subject:`Guided Payments inquiry — ${fields.organization.replace(/[\r\n]/g,' ')}`,text:`New Guided Payments inquiry\nPowered by Priority Business Solutions\n\nName: ${fields.name}\nBusiness: ${fields.organization}\nEmail: ${fields.email}\nPhone: ${fields.phone}\n\n${message}\n\nReference: ${fields.submissionId}`}),signal:AbortSignal.timeout(10000)});
+    const email=await send('https://api.resend.com/emails',{method:'POST',headers:{Authorization:`Bearer ${env.RESEND_API_KEY}`,'Content-Type':'application/json','Idempotency-Key':`guided-inquiry-${fields.submissionId}`},body:JSON.stringify({from:env.MAIL_FROM,to:[destination],reply_to:fields.email,subject:`${referral?'Guided Payments referral partner':'Guided Payments inquiry'} — ${(fields.organization||fields.name).replace(/[\r\n]/g,' ')}`,text:`New ${referral?'Guided Payments referral partner interest':'Guided Payments inquiry'}\nPowered by Priority Business Solutions\n\nName: ${fields.name}\nBusiness: ${fields.organization}\nEmail: ${fields.email}\nPhone: ${fields.phone}\n\n${message}\n\nReference: ${fields.submissionId}`}),signal:AbortSignal.timeout(10000)});
     if(!email.ok)throw new Error('email');const receipt=await email.json();if(!receipt.id)throw new Error('receipt');
     await db(`?id=eq.${fields.submissionId}`,{method:'PATCH',body:JSON.stringify({message:`${message}\n[GP notification:${receipt.id}]`})});
     return json(200,{ok:true,reference:fields.submissionId});

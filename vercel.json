@@ -67,6 +67,14 @@
     {
       "source": "/pos-center",
       "destination": "/api/site?route=/pos-center"
+    },
+    {
+      "source": "/referrals",
+      "destination": "/api/site?route=/referrals"
+    },
+    {
+      "source": "/api/referral",
+      "destination": "/api/site?route=/api/referral"
     }
   ],
   "functions": {

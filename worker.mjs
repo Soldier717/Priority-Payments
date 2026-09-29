@@ -7,11 +7,13 @@ import {render,pages} from './pages.mjs';
 import {assets} from './assets.mjs';
 import {createLeadHandler,issueToken} from './lead.mjs';
 const handleLead=createLeadHandler();
+const handleReferral=createLeadHandler({referral:true});
 export default {async fetch(request,env){
  const url=new URL(request.url);const path=url.pathname.replace(/\/$/,'')||'/';
  if(path==='/api/form-token')return request.method==='GET'?issueToken(env):new Response('Method not allowed',{status:405});
  if(path.startsWith('/api/statement/')){const response=await handleStatement(request,env);return recordConversion(path,response,env);}
  if(path.startsWith('/api/boarding/')){const response=await handleBoarding(request,env);return recordConversion(path,response,env);}
+ if(path==='/api/referral')return handleReferral(request,env);
  if(path==='/api/lead'){const response=await handleLead(request,env);return recordConversion(path,response,env);}
  if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405});
  if(path==='/home-page'){const target=new URL(url);target.pathname='/';return Response.redirect(target,308);}
