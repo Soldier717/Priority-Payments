@@ -23,22 +23,40 @@ if(boarding){
   }catch(e){status.dataset.state='error';status.textContent=e.name==='TimeoutError'?'We could not confirm completion yet. Retry without reloading; your submission reference will stay the same.':e.message;button.disabled=false;button.textContent='Retry submission ↗';if(!capability){snapshot=null;token=await formToken().catch(()=>'');}status.focus();}
   finally{pending=false;boarding.removeAttribute('aria-busy');}
  });
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)hideSsn();});
+ window.addEventListener('pagehide',()=>hideSsn());
  window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();});
 }
 const login=document.querySelector('#review-login');
 if(login){
  const status=document.querySelector('#review-status'),content=document.querySelector('#review-content'),detail=document.querySelector('#review-detail'),list=document.querySelector('#review-list'),more=document.querySelector('#review-more');
- let signInToken=new URLSearchParams(location.hash.slice(1)).get('sign-in'),offset=0,token='',expiry;
+ let signInToken=new URLSearchParams(location.hash.slice(1)).get('sign-in'),offset=0,token='',expiry,detailVersion=0,hideSsn=()=>{};
  if(signInToken){history.replaceState(null,'',location.pathname);document.querySelector('#review-confirm').hidden=false;document.querySelector('#review-send').hidden=true;}
  formToken().then(t=>token=t).catch(()=>{});
- const clear=()=>{content.hidden=true;detail.replaceChildren();detail.hidden=true;list.replaceChildren();login.hidden=false;clearTimeout(expiry);};
+ const clear=()=>{detailVersion++;hideSsn();content.hidden=true;detail.replaceChildren();detail.hidden=true;list.replaceChildren();login.hidden=false;clearTimeout(expiry);};
  const error=e=>{status.textContent=e.message;if(e.status===401)clear();status.focus();};
  async function load(reset=true){const data=await (await request('list',{offset:reset?0:offset})).json();login.hidden=true;content.hidden=false;if(reset)loadMetrics();if(reset){list.replaceChildren();offset=0;}for(const d of data.records){const button=document.createElement('button');button.type='button';button.className='review-record';button.textContent=(d.dba||d.legalName)+' · '+new Date(d.submittedAt).toLocaleString();button.addEventListener('click',()=>show(d.id).catch(error));list.append(button);}offset+=data.records.length;more.hidden=!data.more;status.textContent=offset?'Select a submission to review.':'No completed boarding submissions yet.';}
  async function loadMetrics(){let panel=document.querySelector('#conversion-counts');if(!panel){panel=document.createElement('section');panel.id='conversion-counts';content.prepend(panel);}panel.textContent='Loading conversion counts…';try{const d=await (await request('metrics',{})).json();panel.replaceChildren();const h=document.createElement('h2');h.textContent='Completed actions';panel.append(h);const labels={inquiry_completed:'Inquiries',analysis_completed:'Statement analyses',report_emailed:'Full reports emailed',boarding_completed:'Boarding submissions'};for(const [event,label] of Object.entries(labels)){const p=document.createElement('p');p.textContent=label+': '+d.counts[event].last30Days+' in the last 30 days · '+d.counts[event].total+' since tracking began';panel.append(p);}const note=document.createElement('p');note.className='micro';note.textContent='Tracking starts September 20, 2026. Retries count once. Emails count when the email service accepts them, not when opened.'+(d.capped?' Counts capped at 10,000 per action.':'');panel.append(note);}catch{panel.textContent='Conversion counts are temporarily unavailable. Your boarding records remain available below.';}}
  const labels={dba:'Business DBA',legalName:'Legal name',businessPhone:'Business phone',businessEmail:'Business email',ein:'EIN',ownerName:'Owner name',ownerPhone:'Owner phone',ssn:'Social Security number',paymentNeeds:'Payment needs',acceptance:'Acceptance method'};
- async function show(id){const d=await (await request('detail',{id})).json();detail.replaceChildren();const h=document.createElement('h2');h.textContent=d.details.dba||d.details.legalName;detail.append(h);const ref=document.createElement('p');ref.textContent='Reference: '+id;detail.append(ref);const dl=document.createElement('dl');let ssn;
-  for(const [k,label] of Object.entries(labels)){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=d.details[k]||'Not provided';dl.append(dt,dd);if(k==='ssn')ssn=dd;}detail.append(dl);
-  const reveal=document.createElement('button');reveal.type='button';reveal.textContent='Reveal SSN for 30 seconds';reveal.addEventListener('click',async()=>{reveal.disabled=true;try{const x=await (await request('reveal',{id})).json();ssn.textContent=x.ssn;setTimeout(()=>{ssn.textContent=d.details.ssn;reveal.disabled=false;},30000);}catch(e){error(e);reveal.disabled=false;}});detail.append(reveal);
+ async function show(id){const version=++detailVersion;hideSsn();const d=await (await request('detail',{id})).json();if(version!==detailVersion)return;detail.replaceChildren();const h=document.createElement('h2');h.textContent=d.details.dba||d.details.legalName;detail.append(h);const ref=document.createElement('p');ref.textContent='Reference: '+id;detail.append(ref);const dl=document.createElement('dl');let ssn;
+  for(const [k,label] of Object.entries(labels)){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=d.details[k]||'Not provided';dl.append(dt,dd);if(k==='ssn'){ssn=document.createElement('span');ssn.id='review-ssn-value';ssn.textContent=dd.textContent;dd.replaceChildren(ssn);dd.className='review-ssn';}}detail.append(dl);
+  const reveal=document.createElement('button'),revealStatus=document.createElement('p');
+  reveal.type='button';reveal.id='review-reveal';reveal.textContent='Reveal SSN';reveal.setAttribute('aria-controls','review-ssn-value');
+  revealStatus.id='review-reveal-status';revealStatus.className='micro';revealStatus.setAttribute('role','status');revealStatus.setAttribute('aria-live','polite');
+  ssn.parentNode.append(reveal,revealStatus);
+  let timer,revealed=false,attempt=0;
+  const mask=()=>{attempt++;clearTimeout(timer);ssn.textContent=d.details.ssn||'Not provided';revealed=false;reveal.disabled=d.details.ssn==='Not provided';reveal.textContent='Reveal SSN';revealStatus.textContent=reveal.disabled?'No Social Security number was included with this submission.':'';};
+  hideSsn=mask;mask();
+  reveal.addEventListener('click',async()=>{
+   if(revealed){mask();return;}
+   const currentAttempt=++attempt;reveal.disabled=true;reveal.textContent='Revealing…';revealStatus.textContent='Checking your secure review session…';
+   try{
+    const x=await (await request('reveal',{id})).json();if(version!==detailVersion||currentAttempt!==attempt)return;
+    if(x.ssn==='Not provided'){ssn.textContent=x.ssn;reveal.textContent='SSN not provided';revealStatus.textContent='No Social Security number was included with this submission.';return;}
+    if(typeof x.ssn!=='string'||!/^\d{9}$/.test(x.ssn))throw Error('The Social Security number could not be displayed. Please retry.');
+    ssn.textContent=x.ssn.replace(/^(\d{3})(\d{2})(\d{4})$/,'$1-$2-$3');revealed=true;reveal.disabled=false;reveal.textContent='Hide SSN';revealStatus.textContent='Visible for 30 seconds. You can hide it now.';timer=setTimeout(mask,30000);
+   }catch(e){if(version!==detailVersion||currentAttempt!==attempt)return;mask();revealStatus.textContent=e.message;revealStatus.dataset.state='error';if(e.status===401)error(e);}
+  });
   for(const kind of d.documents){const b=document.createElement('button');b.type='button';b.textContent='Download '+(kind==='bank'?'bank document':'driver’s license');b.addEventListener('click',async()=>{b.disabled=true;try{const r=await request('document',{id,kind}),blob=await r.blob(),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=kind+'-'+id+'.'+({'application/pdf':'pdf','image/png':'png','image/jpeg':'jpg'}[blob.type]||'bin');a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch(e){error(e);}finally{b.disabled=false;}});detail.append(b);}
   const note=document.createElement('p');note.className='micro';note.textContent='Access and downloads are recorded. Uploaded documents are customer-supplied; they have not been malware-scanned.';detail.append(note);detail.hidden=false;detail.scrollIntoView({behavior:'smooth',block:'start'});
  }
@@ -47,5 +65,7 @@ if(login){
  document.querySelector('#review-refresh').addEventListener('click',()=>load().catch(error));more.addEventListener('click',()=>load(false).catch(error));
  document.querySelector('#review-logout').addEventListener('click',async()=>{clear();try{await request('logout');status.textContent='Signed out.';}catch(e){status.textContent='The sign-out request could not be confirmed. Close this browser; the session expires automatically within 30 minutes.';}});
  if(!signInToken)load().then(()=>{expiry=setTimeout(clear,30*60000);}).catch(e=>{if(e.status!==401)error(e);});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)hideSsn();});
+ window.addEventListener('pagehide',()=>hideSsn());
  window.addEventListener('pageshow',event=>{if(event.persisted){clear();location.reload();}});
 }
