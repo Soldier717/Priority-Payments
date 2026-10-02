@@ -1,5 +1,6 @@
+import {terminalCatalog} from './terminal-catalog.mjs';
 import {receiptHero,inquiryForm} from './brand.mjs';
-export const equipmentOptions = ['Help me choose','Clover','Clover Flex','Clover Mini','Clover Station','Clover Station Duo','Quantic','Tonic','Square POS','Dejavoo P1','Dejavoo P Series','Dejavoo QD Line','Valor VL550','Valor Next-Gen Series','Priority Pay Center','Keep my current POS'];
+export const equipmentOptions = [...new Set(['Help me choose','Clover','Clover Flex','Clover Mini','Clover Station','Clover Station Duo','Quantic','Tonic','Square POS','Dejavoo P1','Dejavoo P Series','Dejavoo QD Line','Valor VL550','Valor Next-Gen Series','Priority Pay Center','Keep my current POS',...terminalCatalog.map(t=>t.name)])];
 export const equipmentPrices = {'Clover Flex':'$49.99/mo','Clover Mini':'$59.99/mo','Clover Station':'$99.99/mo','Clover Station Duo':'$119.99/mo'};
 export const businessTypes = ['Restaurant / café','Retail store','Professional services','Automotive','Health / wellness','Other'];
 export const volumeOptions = ['Under $10,000','$10,000–$30,000','$30,000–$75,000','$75,000–$150,000','$150,000+','Not sure yet'];

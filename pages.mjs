@@ -28,7 +28,7 @@ pages['/zerofee/inquiry']=['Your zero-fee inquiry',funnelSteps(2)+'<div class="w
 pages['/zerofee/thank-you']=['Thank you for your inquiry',funnelSteps(3)+thanks.replace('href="/"','href="/zerofee"').replace('Back to the home page','Back to zero-fee options')];
 
 pages['/pos-center']=['POS Center — Clover, Quantic, Tonic, and Square',posCenter.replace('<h2 id="pos-center-title">','<h1 id="pos-center-title">').replace('Four POS possibilities.</em></h2>','Four POS possibilities.</em></h1>')+'<div class="wrap clover-models"><details><summary>View Clover models &amp; pricing <span aria-hidden="true">⌄</span></summary>'+equipment.replace('class="wrap section"','class="section"')+'</details></div>'+inquiryPage];
-pages['/terminal-center']=['Terminal Center — Countertop and Handheld Payments',terminalCenter+inquiryPage.replace('Equipment interest *','Solution interest *')];
+pages['/terminal-center']=['Terminal Center — Countertop and Handheld Payments',terminalCenter+inquiryPage.replace('Equipment interest *','Terminal interest *').replace('Request your personal estimate','Get terminal information').replace('Request my estimate','Request more info')];
 pages['/payments-center']=['Payments Center — Priority Pay Center',paymentsCenter+inquiryPage.replace('Equipment interest *','Solution interest *').replace('Request your personal estimate','Request your Priority Pay Center demo').replace('Request my estimate','Request a demo')];
 pages['/partners']=['Partner dashboard',partnerPage];
 pages['/refer']=['Your personal introduction',referredPage];
