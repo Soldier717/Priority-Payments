@@ -1,0 +1,107 @@
+/* Shared typography and spacing, loaded after page-specific styles. */
+:root{--reading-line:1.7;--section-space:clamp(48px,6vw,80px);--card-space:clamp(22px,2.4vw,30px)}
+body{line-height:var(--reading-line)}
+h1,h2,h3,h4{font-family:'Manrope',Arial,sans-serif;overflow-wrap:break-word}
+h1{letter-spacing:-.035em;line-height:1.15}
+h2{letter-spacing:-.025em;line-height:1.22}
+h3,h4{letter-spacing:-.01em;line-height:1.35}
+/* Small headings need natural letter spacing, not headline tracking. */
+.payment-workflow h2,.payment-features h2,.payment-connections h2,.center-callout h2,.terminal-catalog-group>h2,.terminal-mini h3,.terminal-families h3,.equipment-card h3,.form-card h2,.form-card h3,.boarding-layout aside h2,.review-shell article h2,.partner-toolbar h2,.referral-reward h2,.referral-compensation h2,#statement-result h2,.map-details h2,.map-details h3,.steps h3,.price-card h3{letter-spacing:0;line-height:1.35}
+.pos-platform h4{letter-spacing:0;line-height:1.4}
+.center-heading h1,.terminal-catalog .center-heading h1,.pos-center-heading h1,.map-heading h1,.partner-page h1,.boarding-intro h1{letter-spacing:-.025em;line-height:1.18}
+.section{padding-block:var(--section-space)}
+.eyebrow{line-height:1.55;letter-spacing:.13em}
+.section-heading>p,.center-heading>p:not(.eyebrow),.inquiry-intro>p:not(.eyebrow),.form-intro>p{line-height:1.75}
+.button{letter-spacing:0;line-height:1.45;white-space:normal;text-align:center;min-height:48px;max-width:100%}
+.button span{flex-shrink:0}
+/* Give the phone number room inside the centered header. */
+header .nav.header-balanced{min-height:120px;padding-block:22px;column-gap:24px}
+.header-balanced .header-actions .phone{font-size:13px;bottom:auto;top:calc(100% + 7px);line-height:1.4}
+.header-balanced>.header-boarding,.header-balanced .header-actions>.button{font-size:14px;min-height:48px;line-height:1.45}
+.header-balanced>.gp-brand{gap:14px}
+.header-balanced .gp-brand strong{line-height:1.25;letter-spacing:0}
+.header-balanced .gp-brand small{font-size:11px;line-height:1.5;margin-top:6px;letter-spacing:0}
+.boarding-nav{gap:10px;padding-bottom:18px}
+.boarding-nav .home-tool{min-height:48px;padding:12px 10px;gap:9px;font-size:14px;line-height:1.4;letter-spacing:0}
+.boarding-nav .tool-icon{flex-shrink:0}
+.boarding-nav .home-tool>span:last-child{min-width:0}
+/* Consistent spacing within cards; long names can wrap naturally. */
+.terminal-mini-body{padding:22px;gap:0}
+.terminal-mini h3{font-size:19px;margin-bottom:14px;min-height:2.7em}
+.terminal-mini p{line-height:1.7;margin-bottom:24px}
+.terminal-catalog-group{margin-top:44px}
+.terminal-catalog-group>h2{margin-bottom:24px}
+.payment-features article{padding:var(--card-space)}
+.payment-features h2{font-size:22px;margin-bottom:16px}
+.payment-features p,.payment-workflow p{line-height:1.75}
+.payment-workflow h2{margin-bottom:10px}
+.payment-workflow li{gap:18px}
+.payment-workflow li>span{flex-shrink:0;min-width:20px;line-height:1.75}
+.payment-workflow ol{gap:30px}
+.payment-connections{gap:40px;padding-block:40px}
+.center-callout{gap:28px;padding:30px}
+.pos-platform-body{padding:30px}
+.pos-platform-body>p{line-height:1.75;margin:0 0 20px}
+.pos-platform h4{margin-bottom:16px}
+.pos-platform li{line-height:1.65}
+.pos-platform-tag{letter-spacing:.08em;line-height:1.6}
+.home-center-links h2{letter-spacing:-.015em;line-height:1.3}
+/* Label spacing is measured once, rather than adding margins to grid gaps. */
+.form-card{padding:var(--card-space)}
+.form-card>p:not(.eyebrow),.form-description,.field-help{font-size:14px;line-height:1.65}
+.form-card h3{margin-bottom:12px}
+.field-grid{gap:22px 20px}
+.field-grid>label{margin:0;min-width:0;font-size:14px;line-height:1.5}
+form label{line-height:1.5}
+.field-grid input,.field-grid select,.field-grid textarea{margin-top:8px}
+input:not([type=range]):not([type=checkbox]):not([type=radio]),select,textarea{line-height:1.5;min-height:48px}
+::placeholder{font-size:14px;line-height:1.5}
+.form-card .field-grid{margin-top:24px;margin-bottom:22px}
+.form-privacy{font-size:13px;line-height:1.75;margin-block:18px}
+.guided legend,.boarding-layout legend,.boarding-subheading{letter-spacing:0;line-height:1.35;font-family:'Manrope',Arial,sans-serif}
+.boarding-layout legend{padding-top:12px;margin-block:12px 20px}
+.boarding-layout .boarding-consent input[type=checkbox]{min-height:20px;height:20px;width:20px;padding:0;flex:0 0 20px}
+.equipment-picker summary small{font-size:10px;line-height:1.5;letter-spacing:.08em}
+.equipment-picker summary strong{line-height:1.4}
+.picker-panel .picker-footnote,.picker-panel>p{font-size:12px;line-height:1.6}
+.picker-option small{font-size:12px;line-height:1.5}
+.equipment-card .fit{font-size:12px!important;line-height:1.6}
+.equipment-card .eyebrow{font-size:11px;line-height:1.6}
+.steps li{gap:24px;padding-bottom:24px;margin-bottom:24px}
+.steps p{line-height:1.7;margin-bottom:0}
+.faq summary{line-height:1.6;padding-right:12px}
+.faq details p{line-height:1.75;margin-top:16px}
+.receipt-example-totals{flex-wrap:wrap;gap:20px 36px}
+.footer-grid{gap:32px;align-items:start}
+.footer-grid .gp-brand small{font-size:10px;line-height:1.6;margin-top:6px}
+.legal{gap:16px 24px;flex-wrap:wrap;font-size:12px;line-height:1.7}
+.footer-grid p{line-height:1.7}
+/* Keep controls and graph instructions legible and separated. */
+.network-heading h2{letter-spacing:-.025em;line-height:1.25}
+.network-bottom{margin-top:12px;padding-bottom:6px;gap:20px;font-size:13px}
+.network-bottom button{min-height:44px;padding:10px 14px}
+.map-toolbar{gap:12px;padding:16px;align-items:center}
+.map-toolbar label{font-size:13px;line-height:1.5}
+.map-toolbar select{margin:0;min-height:44px;font-size:14px}
+.map-controls{gap:8px}
+.map-controls button,.map-details button{font-size:13px;line-height:1.5;min-height:44px}
+.map-details{padding:26px}
+.map-details h2{margin-bottom:18px}
+.map-details h3{margin-bottom:14px;font-size:15px}
+.map-details p{font-size:15px;line-height:1.75}
+.map-details .map-note,.map-details .map-keyboard{font-size:12px;line-height:1.7}
+.map-legend{font-size:12px;gap:12px 18px;line-height:1.5}
+.map-hint{font-size:12px;line-height:1.5;bottom:16px}
+.map-node text{font-size:23px}
+.map-node.category text{font-size:25px}
+.map-node.root text{font-size:26px}
+.map-node .map-monogram{font-size:30px}
+/* Prevent narrow columns, oversized sticky headers and clipped form text. */
+@media(max-width:1100px){.terminal-mini-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.map-controls{margin-left:0}.map-toolbar select{flex:1;max-width:280px}}
+@media(max-width:1000px){.boarding-nav{grid-template-columns:repeat(3,minmax(0,1fr))}.boarding-nav .home-tool{min-height:52px}.map-details{display:block}#map-connections{gap:10px}}
+@media(max-width:800px){.pos-platform-body{padding:24px}.pos-platform-brand{flex-wrap:wrap;gap:14px}.pos-platform-tag{font-size:11px;max-width:160px}.terminal-mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.terminal-mini h3,.terminal-mini p{min-height:0}}
+@media(max-width:760px){header{position:static}html{scroll-padding-top:24px}.inquiry-section,.pos-center,.review-shell article,#statement-result{scroll-margin-top:24px}header .nav.header-balanced{min-height:0;gap:20px 14px;padding-block:20px}.header-balanced .gp-brand small{font-size:11px}.header-balanced .gp-brand strong{font-size:22px}.header-balanced>.header-boarding,.header-balanced .header-actions>.button{font-size:13px;padding:12px 10px}.header-balanced .equipment-picker{min-width:0;width:100%}.header-balanced .equipment-picker summary strong{font-size:12px;max-width:none}.header-balanced .equipment-picker summary small{font-size:10px}.header-balanced .equipment-picker>summary{padding:12px;gap:10px}.boarding-nav{padding-bottom:20px;gap:10px}.boarding-nav .home-tool{font-size:13px;line-height:1.45;padding:12px 8px;min-height:78px;flex-direction:column;gap:8px}.boarding-nav .tool-icon{width:22px;height:22px;font-size:22px}.hero h1{letter-spacing:-.03em;line-height:1.16}.hero .lead{font-size:17px;line-height:1.75}.solution-center{padding-block:44px 52px}.payments-intro{gap:32px;margin-bottom:36px}.center-heading h1{margin-block:16px 22px}.payment-features{grid-template-columns:1fr}.payment-connections{grid-template-columns:1fr;gap:28px}.center-callout{padding:24px;flex-direction:column;align-items:stretch}.center-callout .button{width:100%}.center-actions{gap:16px}.form-card .field-grid{grid-template-columns:1fr;gap:20px}.form-layout,.inquiry-section{gap:32px}.boarding-layout{gap:28px}.boarding-layout aside{padding-bottom:24px}.footer-grid{gap:24px}.network-heading h2{line-height:1.3}.network-bottom{margin-top:16px}.map-heading{display:block}.map-heading .button{margin-top:22px}.map-toolbar label{width:100%}.map-toolbar select{width:100%;max-width:none;flex-basis:100%}.map-controls{width:100%;flex-wrap:wrap}.map-controls button{flex:1}.map-details{padding:24px}.map-legend{font-size:12px}.map-hint{font-size:11px}}
+@media(max-width:520px){.terminal-mini-grid{grid-template-columns:1fr}.terminal-mini-body{padding:22px}.terminal-mini-photo{height:200px}.boarding-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.boarding-nav .home-tool{flex-direction:row;justify-content:center;text-align:left;min-height:64px;gap:8px;padding:12px 9px}.boarding-nav .home-tool .tool-icon{width:20px;height:20px;font-size:20px}.center-actions .button{width:100%}.home-center-links>a{padding:26px}.home-center-links h2{font-size:28px}.map-controls button{padding:10px 8px}.terminal-photo-toolbar{gap:14px;align-items:start}.terminal-photo-toolbar h2{font-size:20px}.terminal-photo-close{padding:10px 12px}.receipt-example-totals strong{font-size:28px}}
+
+@media(min-width:761px) and (max-width:900px){header .nav.header-balanced{grid-template-columns:1fr 1fr;min-height:0;gap:20px 14px;padding-block:22px}.header-balanced>.gp-brand{grid-column:1/-1;grid-row:1}.header-balanced>.header-boarding{grid-column:1;grid-row:2;justify-self:stretch;width:100%}.header-balanced .header-actions{grid-column:2;grid-row:2;justify-self:stretch;align-items:stretch}.header-balanced .header-actions>.button{width:100%}.header-balanced .header-actions .phone{display:none}.header-balanced .equipment-picker{min-width:0;width:100%}}
+@media(max-width:760px){#home-network .network-sub{font-size:12px}#home-network .network-label{font-size:21px}#home-network .network-arrow{font-size:18px}.network-bottom p{font-size:13px;line-height:1.6}}
