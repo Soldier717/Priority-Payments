@@ -87,6 +87,14 @@
     {
       "source": "/api/partners/:action",
       "destination": "/api/site?route=/api/partners/:action"
+    },
+    {
+      "source": "/terminal-center",
+      "destination": "/api/site?route=/terminal-center"
+    },
+    {
+      "source": "/payments-center",
+      "destination": "/api/site?route=/payments-center"
     }
   ],
   "functions": {
