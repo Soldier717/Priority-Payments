@@ -5,10 +5,10 @@ import {render} from '../pages.mjs';
 import {createServer} from '../server.mjs';
 test('payments graph has valid connections, all offerings reachable, and reset creates fresh positions',()=>{
  const {nodes,edges}=createGraph(),ids=new Set(nodes.map(n=>n.id));assert.equal(ids.size,nodes.length);
- for(const n of nodes){assert.ok(Number.isFinite(n.x)&&Number.isFinite(n.y));assert.ok(n.description);if(n.url)assert.match(n.url,/^(\/|tel:)/);}
+ for(const n of nodes){assert.ok(Number.isFinite(n.x)&&Number.isFinite(n.y));assert.ok(n.description);if(n.url)assert.match(n.url,/^(\/|tel:|https:\/\/)/);}
  for(const e of edges){assert.ok(ids.has(e.source)&&ids.has(e.target));assert.notEqual(e.source,e.target);}
- const visited=new Set(['guided']);let changed=true;while(changed){changed=false;for(const e of edges)if(visited.has(e.source)&&!visited.has(e.target)){visited.add(e.target);changed=true;}}assert.equal(visited.size,nodes.length);
- assert.equal(categories.length,6);nodes[0].x=9999;assert.equal(createGraph().nodes[0].x,750);
+ const visited=new Set(['priority']);let changed=true;while(changed){changed=false;for(const e of edges)if(visited.has(e.source)&&!visited.has(e.target)){visited.add(e.target);changed=true;}}assert.equal(visited.size,nodes.length);
+ assert.ok(edges.some(e=>e.source==='priority'&&e.target==='guided'));assert.equal(nodes.find(n=>n.id==='priority').kind,'root');assert.equal(nodes.find(n=>n.id==='guided').kind,'brand');assert.equal(categories.length,6);nodes[0].x=9999;assert.equal(createGraph().nodes[0].x,750);
  assert.ok(edges.some(e=>e.source==='pay-center'&&e.target==='quickbooks'));
 });
 test('map route serves graph and resources; boarding moves to the top left and brand remains centered',async()=>{

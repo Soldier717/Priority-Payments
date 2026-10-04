@@ -7,8 +7,8 @@ export const categories = [
  {id:'support',label:'Setup & support',color:'#83baff',x:280,y:570,items:[['boarding','Customer boarding','Start the merchant application and onboarding process.','/boarding'],['installation','Installation & setup','Help get payment equipment and POS systems ready for your business.','/#inquiry'],['menus','Menu builds & training','POS menu setup and training for your team.','/#inquiry'],['local','Direct local support','Connect with Sean for hands-on guidance and support.','tel:2392971703'],['referrals','Referral partners','Connect businesses with Guided Payments.','/referrals']]}
 ];
 export function createGraph(){
- const nodes=[{id:'guided',label:'Guided Payments',description:'Sean Russ helps businesses choose, set up and support payment solutions, powered by Priority Business Solutions.',url:'/#inquiry',color:'#ffbf55',x:750,y:570,kind:'root'}];
- const edges=[];
+ const nodes=[{id:'priority',label:'Priority Business Solutions',description:'Priority Business Solutions powers the payment and business solutions Sean brings to merchants through Guided Payments.',url:'https://www.prioritybusinesssolutions.com/',color:'#ffbf55',x:750,y:570,kind:'root'},{id:'guided',label:'Guided Payments',description:'Sean Russ’s payments brand, powered by Priority Business Solutions. Explore personal guidance on systems, pricing, setup and support.',url:'/#inquiry',color:'#83baff',x:750,y:760,kind:'brand'}];
+ const edges=[{source:'priority',target:'guided'}];
  for(const c of categories){
   nodes.push({id:c.id,label:c.label,description:`Explore ${c.label.toLowerCase()} with Guided Payments. Select a connected service to see more.`,color:c.color,x:c.x,y:c.y,kind:'category'});
   edges.push({source:'guided',target:c.id});

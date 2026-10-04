@@ -108,3 +108,20 @@ input:not([type=range]):not([type=checkbox]):not([type=radio]),select,textarea{l
 @media(min-width:901px){.header-balanced>.header-boarding,.header-balanced .header-actions>.button{width:220px;min-height:56px;white-space:nowrap}}
 @media(min-width:1001px){.boarding-nav .home-tool{font-size:13.5px;gap:8px;padding-inline:10px}.boarding-nav .tool-icon{width:22px;height:22px;font-size:22px}}
 @media(max-width:900px){.header-balanced>.header-boarding,.header-balanced .header-actions>.button{min-height:64px}}
+
+.map-node.brand circle{stroke:#b8d9ff;stroke-width:3}.map-node.brand text{font-size:26px;font-weight:800}
+
+/* Electric accents stay on the shapes and links, away from the labels. */
+.map-node circle{stroke:currentColor;stroke-width:2;filter:drop-shadow(0 0 7px currentColor) drop-shadow(0 0 16px currentColor)}
+.map-node.selected circle,.map-node:focus-visible circle{stroke:#fff;stroke-width:4;filter:drop-shadow(0 0 10px currentColor) drop-shadow(0 0 24px currentColor)}
+.map-node.related circle{stroke:#e8f5ff;stroke-width:2.5}
+.map-edge{stroke:#456d99;opacity:.58;stroke-width:1.6}
+.map-edge.active{stroke:#91e7ff;opacity:1;stroke-width:2.8;filter:drop-shadow(0 0 4px #26bcff)}
+.map-canvas{background:radial-gradient(ellipse at 50% 45%,#18334c,#080f1b 78%)}
+.network-node rect{fill:#102234;stroke:currentColor;stroke-width:1.6;filter:drop-shadow(0 0 5px currentColor)}
+.network-node:hover rect,.network-node:focus-visible rect{fill:#1a344d;stroke:#e8f7ff;stroke-width:2;filter:drop-shadow(0 0 9px currentColor)}
+.network-edge{opacity:.5;stroke-width:1.7;filter:drop-shadow(0 0 3px currentColor)}
+.network-edge.active{opacity:1;stroke-width:3;filter:drop-shadow(0 0 6px #64d9ff)}
+.network-core circle{filter:drop-shadow(0 0 14px #ffb83f) drop-shadow(0 0 34px #f5a62370);stroke:#ffe5b6;stroke-width:3}
+.network-guided rect{filter:drop-shadow(0 0 9px #278eff);stroke:#8ed7ff;stroke-width:2.5}
+.network-brand-edge{stroke:#9ce6ff;stroke-width:2.5;opacity:1;filter:drop-shadow(0 0 5px #24baff)}
