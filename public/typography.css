@@ -125,3 +125,10 @@ input:not([type=range]):not([type=checkbox]):not([type=radio]),select,textarea{l
 .network-core circle{filter:drop-shadow(0 0 14px #ffb83f) drop-shadow(0 0 34px #f5a62370);stroke:#ffe5b6;stroke-width:3}
 .network-guided rect{filter:drop-shadow(0 0 9px #278eff);stroke:#8ed7ff;stroke-width:2.5}
 .network-brand-edge{stroke:#9ce6ff;stroke-width:2.5;opacity:1;filter:drop-shadow(0 0 5px #24baff)}
+
+.network-node[data-node="pos"],.network-edge[data-edge="pos"]{color:#92d9ad}
+.network-node[data-node="terminals"],.network-edge[data-edge="terminals"]{color:#b7a2ff}
+.network-node[data-node="pricing"],.network-edge[data-edge="pricing"]{color:#ff98b6}
+.network-node[data-node="payments"],.network-edge[data-edge="payments"]{color:#7ce4df}
+.network-node[data-node="business"],.network-edge[data-edge="business"]{color:#ffcb7c}
+.network-node[data-node="support"],.network-edge[data-edge="support"]{color:#83baff}
