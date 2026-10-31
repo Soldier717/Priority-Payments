@@ -36,7 +36,7 @@
    selected=d.partner.id;$('#partner-welcome').textContent=d.partner.name+' — referrals';$('#partner-back').hidden=!d.admin;$('#partner-share-link').value=d.shareUrl;
    const list=$('#partner-records');if(!more)list.replaceChildren();$('#partner-empty').hidden=more||d.records.length>0;
    for(const r of d.records){const card=node('article',undefined,'form-card partner-record');card.append(node('h3',r.business),node('p','Submitted '+new Date(r.createdAt).toLocaleDateString()),node('span',r.status,'partner-badge'));if(d.admin){
-    card.append(node('p',r.details.name+' · '+r.details.email+' · '+r.details.phone),node('p',r.details.message||'No notes.'));
+    card.append(node('p',r.details.name+' · '+r.details.email+' · '+r.details.phone),node('p',r.details.message||'No notes.'),node('p','Referred by: '+(r.referredBy||'Not given')));
     const label=node('label','Referral status'),select=node('select');for(const value of ['Submitted','Contacted','Signed up']){const option=node('option',value);option.value=value;option.selected=value===r.status;select.append(option);}label.append(select);const save=node('button','Save status','button small');save.type='button';save.addEventListener('click',async()=>{save.disabled=true;try{await api('status',{partnerId:selected,id:r.id,status:select.value});card.querySelector('.partner-badge').textContent=select.value;message(status,'Referral status updated.');}catch(e){showError(e);}finally{save.disabled=false;}});card.append(label,save);
    }list.append(card);}
    recordsOffset=offset+25;$('#partner-records-more').hidden=!d.more;

@@ -43,7 +43,7 @@ export function createPartnerHandler({send=fetch,now=Date.now}={}){
   if(action==='submit'){
    verifyForm();if(!ID.test(data.partnerId||'')||!UUID.test(data.id||''))fail(400,'This referral link is invalid. Contact Sean for help.');
    const profile=await get('profiles/'+data.partnerId);if(!profile)fail(404,'This referral link is unavailable. Contact Sean.');
-   const details={name:field('name',100),business:field('business',150),email:normalizeEmail(field('email',254)),phone:field('phone',30),message:field('message',2000,false)};
+   const details={name:field('name',100),business:field('business',150),email:normalizeEmail(field('email',254)),phone:field('phone',30),message:field('message',2000,false),referredBy:field('referredBy',100,false)};
    if(!/^[+()\d.\s-]+$/.test(details.phone)||details.phone.replace(/\D/g,'').length<7)fail(400,'Enter a valid phone number.');
    if(data.consent!==true)fail(400,'Confirm that Sean can contact you and share your referral status with the referring partner.');
    const hash=digest(env,JSON.stringify(details)),path='referrals/'+profile.id+'/'+data.id;
@@ -52,7 +52,7 @@ export function createPartnerHandler({send=fetch,now=Date.now}={}){
    if(record?.hash!==hash)fail(409,'This reference is already used. Reload the page to start a new referral.');
    const notification='notifications/'+profile.id+'/'+data.id;
    if(!await get(notification)){
-    const receipt=await email(ADMIN,'New partner referral — '+details.business.replace(/[\r\n]/g,' '),`New business inquiry from a partner referral\n\nPartner: ${profile.name}\nPartner email: ${profile.email}\nBusiness: ${details.business}\nContact: ${details.name}\nEmail: ${details.email}\nPhone: ${details.phone}\nNotes: ${details.message||'None'}\n\nReference: ${data.id}\nReview and update status: ${siteOrigin}/partners`, 'partner-referral-'+profile.id+'-'+data.id,details.email);
+    const receipt=await email(ADMIN,'New partner referral — '+details.business.replace(/[\r\n]/g,' '),`New business inquiry from a partner referral\n\nPartner: ${profile.name}\nPartner email: ${profile.email}\nBusiness: ${details.business}\nContact: ${details.name}\nEmail: ${details.email}\nPhone: ${details.phone}\nNotes: ${details.message||'None'}\nReferred by (partner team member): ${details.referredBy||'Not given'}\n\nReference: ${data.id}\nReview and update status: ${siteOrigin}/partners`, 'partner-referral-'+profile.id+'-'+data.id,details.email);
     await save(notification,{receipt});
    }
    return reply(200,{ok:true,reference:data.id});
@@ -79,7 +79,7 @@ export function createPartnerHandler({send=fetch,now=Date.now}={}){
    if(!admin&&data.partnerId&&data.partnerId!==id)fail(403,'You can only view your own referrals.');
    const profile=await get('profiles/'+id);if(!profile)fail(404,'Partner not found.');
    const rows=await list('referrals/'+id,offset),records=[];
-   for(const row of rows){if(!UUID.test(row.name))continue;const record=await get('referrals/'+id+'/'+row.name);if(!record)continue;const status=await get('statuses/'+id+'/'+record.id);records.push({id:record.id,business:record.details.business,createdAt:record.createdAt,status:status?.status||'Submitted',updatedAt:status?.updatedAt||record.createdAt,...(admin?{details:record.details}:{})});}
+   for(const row of rows){if(!UUID.test(row.name))continue;const record=await get('referrals/'+id+'/'+row.name);if(!record)continue;const status=await get('statuses/'+id+'/'+record.id);records.push({id:record.id,business:record.details.business,referredBy:record.details.referredBy||'',createdAt:record.createdAt,status:status?.status||'Submitted',updatedAt:status?.updatedAt||record.createdAt,...(admin?{details:record.details}:{})});}
    return reply(200,{admin,partner:profile,shareUrl:siteOrigin+'/refer?partner='+id,records,more:rows.length===25});
   }
   if(action==='status'){

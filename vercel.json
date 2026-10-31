@@ -81,6 +81,10 @@
       "destination": "/api/site?route=/partners"
     },
     {
+      "source": "/partners/prospect",
+      "destination": "/api/site?route=/partners/prospect"
+    },
+    {
       "source": "/refer",
       "destination": "/api/site?route=/refer"
     },
