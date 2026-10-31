@@ -75,3 +75,10 @@ test('rate limits, pagination and testing storage isolation',async()=>{
 test('public pages expose partner entry points without private data',()=>{
  assert.match(render('/referrals'),/href="\/partners"/);assert.match(render('/partners'),/id="partner-login-form"/);assert.match(render('/refer'),/id="referred-form"/);assert.match(render('/refer'),/name="consent"/);assert.match(render('/partners'),/src="\/partners.js"/);
 });
+test('referral records carry an optional referred-by name for partner and admin',async()=>{
+ const f=fixture();const admin=await f.login(ADMIN);const p=await f.register(admin.cookie);
+ const r=await f.call('submit',{...await f.inquiry(p),referredBy:'Team Member'});assert.equal(r.status,200);
+ assert.match(f.emails.at(-1).text,/Referred by \(partner team member\): Team Member/);
+ const partner=await f.login('partner@example.com');const d=await f.call('dashboard',{},partner.cookie);
+ assert.equal(d.data.records[0].referredBy,'Team Member');assert.equal(d.data.records[0].details,undefined);
+});

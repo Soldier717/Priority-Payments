@@ -121,7 +121,7 @@ const handoff=`<section class="pb-view" id="pb-handoff">
 </table></div>
 <h3>How to send it</h3>
 <div class="pb-grid">
-<div class="pb-tile"><h4>Option A: your referral link</h4><p>Sign in at <a href="/partners">guidedpayments.com/partners</a>, copy your referral link, and send it to the client. Anything that comes through it is credited to you automatically, and you can watch its status on your dashboard.</p></div>
+<div class="pb-tile"><h4>Option A: the Prospect referral link</h4><p>Prospect has one partner account (Bailey has the sign-in at <a href="/partners">guidedpayments.com/partners</a>). Copy the referral link from the dashboard and send it to the client. When they fill it out, the form asks who introduced them, so put your name in the message you send them and credit lands on you. Status shows on the dashboard.</p></div>
 <div class="pb-tile"><h4>Option B: email Sean</h4><p>Send the handoff message below to <strong>sean@guidedpayments.com</strong> with the business name in the subject. Use this when the client gave you their info verbally and you want Sean to make first contact.</p></div>
 <div class="pb-tile"><h4>Option C: point them to the site</h4><p>Client prefers to self-serve? Send them to <a href="/#inquiry">guidedpayments.com</a> and tell them to mention Prospect Marketing and your name in the notes field. Then email Sean so he's watching for it.</p></div>
 </div>
@@ -135,7 +135,7 @@ const handoff=`<section class="pb-view" id="pb-handoff">
 <li><b>Statement review</b><small>Client uploads a statement to the <a href="/statement-analyzer">statement analyzer</a> or sends it to Sean. He shows them current cost vs. proposed, line by line.</small></li>
 <li><b>Decision</b><small>Client chooses to move forward, stay put, or revisit later. You get a one-line update either way.</small></li>
 <li><b>Setup</b><small>Application, approval, then gateway or equipment setup. If it touches a site you built, Sean coordinates with you on the gateway keys before anything goes live.</small></li>
-<li><b>Credit</b><small>Your referral shows on your partner dashboard the day it comes in.</small></li>
+<li><b>Credit</b><small>Your referral shows on the Prospect partner dashboard the day it comes in.</small></li>
 </ol>
 <h3>If the client comes back to you instead of Sean</h3>
 <p>Forward it to Sean and reply to the client with “Looping Sean in.” Don't try to answer the payments question yourself, even if you think you know. One wrong number costs more goodwill than a two-hour delay.</p>
@@ -214,10 +214,12 @@ const contact=`<section class="pb-view" id="pb-contact">
 </table></div>
 <h3>How you get credit</h3>
 <ol class="pb-steps">
-<li><b>Every referral is tracked on the partner dashboard</b><small>Referrals through your link are credited automatically. For email handoffs, put your name in the message so Sean logs it to the right person.</small></li>
+<li><b>Every referral is tracked on the Prospect partner dashboard</b><small>Referrals through the link are credited to Prospect automatically, and the client's form asks who introduced them. For email handoffs, put your name in the message. Individual team logins can be added later if Bailey wants them.</small></li>
 <li><b>You see status as it changes</b><small>Submitted, Contacted, Signed up. Business name and status only; the client's contact details stay private to Sean.</small></li>
 <li><b>Compensation is paid once the referral becomes a customer</b><small>Structured as a lump sum or ongoing residuals over the life of the account, per the terms agreed between Sean and Prospect Marketing.</small></li>
 </ol>
+<h3>Your point person</h3>
+<p>Bailey Peer owns the Prospect side of this partnership and holds the partner dashboard sign-in. Program questions and comp go through Bailey; client-specific questions go straight to Sean.</p>
 <h3>Questions about this playbook</h3>
 <p>If a client asks something that isn't covered in Common problems, send the question to Sean and he'll add the answer here so the whole team has it next time.</p>
 </section>`;
