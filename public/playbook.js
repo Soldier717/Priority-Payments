@@ -1,5 +1,5 @@
 (function(){
-  var views=['start','spot','introduce','handoff','problems','offer','contact'];
+  var views=['start','spot','introduce','handoff','problems','offer','resources','contact'];
   function show(){
     var h=(location.hash||'').replace('#','');
     if(views.indexOf(h)<0)h='start';

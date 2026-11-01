@@ -65,3 +65,9 @@
 .pb-ask a{font-weight:700;text-decoration:none;border-bottom:2px solid rgba(25,32,28,.35)}
 .pb-ask a:hover{border-bottom-color:var(--ink)}
 .pb-view .pb-ask+p{margin-top:10px}
+
+.pb-grid-1{grid-template-columns:1fr;max-width:72ch}
+.pb-res{display:flex;flex-direction:column}
+.pb-kind{font-size:11px;letter-spacing:2px;font-weight:800;color:var(--muted);text-transform:uppercase;margin:0 0 6px!important}
+.pb-res .pb-dl{margin-top:auto;padding-top:12px}
+.pb-res .button.small{gap:10px}

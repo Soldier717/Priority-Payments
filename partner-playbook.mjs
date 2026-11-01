@@ -12,6 +12,7 @@ const nav=`<nav class="pb-nav" aria-label="Playbook sections">
 <a href="#handoff" data-v="handoff">Hand it off</a>
 <a href="#problems" data-v="problems">Client questions</a>
 <a href="#offer" data-v="offer">What we offer</a>
+<a href="#resources" data-v="resources">Resources</a>
 <a href="#contact" data-v="contact">Contact &amp; credit</a>
 </nav>`;
 
@@ -34,7 +35,7 @@ ${ask('Questions about any of this?')}
 <div class="pb-tile"><h4>Sent the same day</h4><p>Referrals cool fast. Send it while the conversation is fresh. Hand it off takes under two minutes.</p></div>
 </div>
 <h3>How to use this page</h3>
-<p>Read Spot it, Introduce, and Hand it off once; that's the core. Client questions is a lookup table for when someone asks you something specific. What we offer is background. Contact &amp; credit is how to reach Sean and how your referrals are tracked.</p>
+<p>Read Spot it, Introduce, and Hand it off once; that's the core. Client questions is a lookup table for when someone asks you something specific. What we offer is background. Resources has the e-book and one-page overviews you can forward to clients. Contact &amp; credit is how to reach Sean and how your referrals are tracked.</p>
 </section>`;
 
 const tile=(h,p,say)=>`<div class="pb-tile"><h4>${h}</h4><p>${p}</p>${say?`<p class="pb-say">Try: <em>“${say}”</em></p>`:''}</div>`;
@@ -213,6 +214,31 @@ const offer=`<section class="pb-view" id="pb-offer">
 ${ask('Curious how any of this works under the hood?')}
 </section>`;
 
+const res=(title,kind,file,size,when,blurb)=>`<div class="pb-tile pb-res"><p class="pb-kind">${kind} · PDF · ${size}</p><h4>${title}</h4><p>${blurb}</p><p class="pb-say"><strong>Send it when:</strong> ${when}</p><p class="pb-dl"><a class="button small" href="${file}" target="_blank" rel="noopener">Open ${title} ↗</a></p></div>`;
+const resources=`<section class="pb-view" id="pb-resources">
+<h2>Resources</h2>
+<p class="pb-lede">Everything here is built to be forwarded. Read the guide once yourself, then send the overviews to clients as the moment comes up. No pricing in any of them, on purpose, so nothing you forward can be wrong by the time Sean quotes.</p>
+<h3>Start with this one</h3>
+<div class="pb-grid pb-grid-1">
+${res('The Guided Payments Guide','E-book','/guided-payments-guide.pdf','16 pages','a client wants to understand their statement, or you want to understand what Sean does before the first intro. It\'s the whole picture in plain English.','How to read a processing statement, effective rate, junk fees, pricing models, PCI, dual pricing, when to switch, and a closing page on every solution Sean offers.')}
+</div>
+<h3>Point-of-sale overviews</h3>
+<div class="pb-grid">
+${res('Square','POS overview','/overview-square.pdf','1 page','a client is on Square or considering it. Sean sells and supports it; nothing has to change.','Who it\'s for, what Sean reviews, Square dual pricing status, and the line to say.')}
+${res('Clover','POS overview','/overview-clover.pdf','1 page','a client is opening a storefront or asks which POS \u201Cjust works.\u201D','Flex, Mini, Station, Station Duo; dual pricing on-device; quoted with processing.')}
+${res('Quantic','POS overview','/overview-quantic.pdf','1 page','a full-service restaurant, bar, or multi-location operator comes up.','Floor plans, coursing, bar tabs, retail inventory, Quantic Lite, integrations.')}
+</div>
+<h3>Solution overviews</h3>
+<div class="pb-grid">
+${res('E-Commerce &amp; Online Checkout','Solution overview','/overview-ecommerce.pdf','1 page','you\'re building or rebuilding a checkout, or a client says \u201Cjust use Stripe.\u201D','Merchant account plus gateway for WooCommerce/WordPress, hosted fields, recurring billing, and how the developer handoff works.')}
+${res('Invoicing &amp; Payment Links','Solution overview','/overview-invoicing.pdf','1 page','a client is chasing invoices or cleaning up QuickBooks.','Priority Pay Center: invoices, text-to-pay, links and QR, recurring billing, ACH, QuickBooks sync.')}
+</div>
+<h3>Already on the site</h3>
+<ul><li><a href="/referral-program.pdf">Referral program brochure</a>: the public version of how this partnership works.</li><li><a href="/statement-analyzer">Statement analyzer</a>: not a file, but the single most useful link you can send.</li></ul>
+${ask('Need a one-pager that isn\'t here?')}
+<p>Tell Sean what the client asked about and he\'ll add it to this list.</p>
+</section>`;
+
 const contact=`<section class="pb-view" id="pb-contact">
 <h2>Contact &amp; referral credit</h2>
 <p class="pb-lede">How to reach Sean, and how your referrals are tracked. Sean would much rather hear from you early than have you wonder.</p>
@@ -240,4 +266,4 @@ ${ask('Anything at all?')}
 </section>`;
 
 export const partnerPlaybook=`<section class="wrap section pb-head"><p class="eyebrow"><span></span> REFERRAL PARTNER PLAYBOOK · PROSPECT MARKETING</p><h1>You spot it.<br><em>Sean closes it.</em></h1><p class="lead">Welcome, Prospect team. This is everything you need to recognize a payments opportunity, bring it up with a client, and hand it off, without becoming a payments expert. And if you ever get stuck, Sean is one text away.</p></section>
-<div class="wrap pb-shell">${nav}<div class="pb-main">${start}${spot}${introduce}${handoff}${problems}${offer}${contact}</div></div>`;
+<div class="wrap pb-shell">${nav}<div class="pb-main">${start}${spot}${introduce}${handoff}${problems}${offer}${resources}${contact}</div></div>`;
